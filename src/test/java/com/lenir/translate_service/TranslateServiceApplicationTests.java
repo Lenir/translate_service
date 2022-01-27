@@ -1,5 +1,6 @@
 package com.lenir.translate_service;
 
+import com.lenir.translate_service.enums.Language;
 import com.lenir.translate_service.results.RankingResult;
 import com.lenir.translate_service.results.TranslateResult;
 import com.lenir.translate_service.service.RankingService;
@@ -8,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class TranslateServiceApplicationTests {
@@ -22,19 +25,20 @@ class TranslateServiceApplicationTests {
 	void translateServiceTest(){
 		// Setup
 		String translateTarget = "This sucks.";
-		String targetLang = "kr";
+		Language targetLang = Language.KR;
 		// 번역 요청
-		TranslateResult translateResult = translateService.translate(translateTarget, targetLang);
+		Optional<TranslateResult> translateResult = Optional.ofNullable(
+				translateService.translate(translateTarget, targetLang));
 		// 결과 비교
-		assertNotNull(translateResult);
+		assertTrue(translateResult.isPresent());
 	}
 	
 	@Test
 	void rankingServiceTest(){
 		// 순위 요청
-		RankingResult rankingResult = rankingService.ranking();
+		Optional<RankingResult> rankingResult = Optional.ofNullable(rankingService.ranking());
 		// 결과 비교
-		assertNotNull(rankingResult);
+		assertTrue(rankingResult.isPresent());
 	}
 
 }
