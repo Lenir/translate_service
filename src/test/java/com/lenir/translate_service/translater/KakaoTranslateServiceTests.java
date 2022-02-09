@@ -18,9 +18,9 @@ public class KakaoTranslateServiceTests {
     KakaoTranslateService kakaoTranslateService;
 
     @Test
-    void kakaoLanguageRecognizeTest(){
+    void kakaoLanguageRecognizeTest_english(){
         // Setup
-        String translateTarget = "This sucks.";
+        String translateTarget = "Hamberger";
         // 확인 요청
         Optional<KakaoLanguageRecognitionResult> recognitionResult = Optional.ofNullable(
                 kakaoTranslateService.recognizeLanguage(translateTarget)
@@ -28,6 +28,19 @@ public class KakaoTranslateServiceTests {
         // 결과 확인
         assertTrue(recognitionResult.isPresent());
         assertEquals(Language.EN, recognitionResult.get().getLanguage());
+    }
+    
+    @Test
+    void kakaoLanguageRecognizeTest_korean(){
+        // Setup
+        String translateTarget = "햄버거";
+        // 확인 요청
+        Optional<KakaoLanguageRecognitionResult> recognitionResult = Optional.ofNullable(
+                kakaoTranslateService.recognizeLanguage(translateTarget)
+        );
+        // 결과 확인
+        assertTrue(recognitionResult.isPresent());
+        assertEquals(Language.KR, recognitionResult.get().getLanguage());
     }
 
     @Test

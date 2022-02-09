@@ -24,7 +24,7 @@ class TranslateServiceApplicationTests {
 	@Test
 	void translateServiceTest(){
 		// Setup
-		String translateTarget = "This sucks.";
+		String translateTarget = "Hamberger";
 		Language targetLang = Language.KR;
 		// 번역 요청
 		Optional<TranslateResult> translateResult = Optional.ofNullable(

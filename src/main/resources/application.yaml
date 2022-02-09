@@ -1,0 +1,6 @@
+kakao:
+  auth: KakaoAK a150715997e088d0b62b48fc49f9be6c
+  translate-service:
+    uri: https://dapi.kakao.com/v2/translation/translate
+  language-detect-service:
+    uri: https://dapi.kakao.com/v3/translation/language/detect
