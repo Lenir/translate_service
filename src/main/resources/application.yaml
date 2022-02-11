@@ -4,3 +4,6 @@ kakao:
     uri: https://dapi.kakao.com/v2/translation/translate
   language-detect-service:
     uri: https://dapi.kakao.com/v3/translation/language/detect
+
+ssl:
+  ignore-ssl: true

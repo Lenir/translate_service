@@ -2,11 +2,8 @@ package com.lenir.translate_service.translater;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.lenir.translate_service.KakaoLanguageDetectRequest;
-import com.lenir.translate_service.communicator.AsyncHttpRequestHelper;
-import com.lenir.translate_service.communicator.KakaoCommunicator;
-import com.lenir.translate_service.communicator.KakaoLanguageDetectParameter;
-import com.lenir.translate_service.communicator.KakaoLanguageDetectResponse;
+import com.lenir.translate_service.communicator.KakaoLanguageDetectRequest;
+import com.lenir.translate_service.communicator.*;
 import com.lenir.translate_service.enums.Language;
 import com.lenir.translate_service.results.KakaoLanguageRecognitionResult;
 import com.lenir.translate_service.results.KakaoTranslateResult;
@@ -36,7 +33,7 @@ public class KakaoTranslateService implements Translater {
         try {
             SimpleHttpResponse response = futureResponse.get();
             KakaoLanguageDetectResponse kakaoResponse = objectMapper.readValue(response.getBodyText(), KakaoLanguageDetectResponse.class);
-            result = new KakaoLanguageRecognitionResult(Language.valueOf(kakaoResponse.getLanguageInfo().get(0).getCode()));
+            result = new KakaoLanguageRecognitionResult(Language.valueOf(kakaoResponse.getLanguageInfo().get(0).getCode().toUpperCase()));
         } catch (InterruptedException e) {
             logger.error(e);
             result = new KakaoLanguageRecognitionResult();
@@ -49,11 +46,28 @@ public class KakaoTranslateService implements Translater {
 
     @Override
     public KakaoTranslateResult translate(String translateTarget, Language asisLang, Language tobeLang) {
-        return new KakaoTranslateResult();
+        KakaoTranslateParameter parameter = KakaoTranslateParameter.builder()
+                .query(translateTarget)
+                .srcLang(asisLang.name().toLowerCase())
+                .targetLang(tobeLang.name().toLowerCase())
+                .build();
+        KakaoTranslateRequest request = new KakaoTranslateRequest(parameter);
+        Future<SimpleHttpResponse> futureResponse = kakaoCommunicator.getFutureResponse(request);
+        KakaoTranslateResult result;
+        try{
+            SimpleHttpResponse response = futureResponse.get();
+            KakaoTranslateResponse kakaoResponse = objectMapper.readValue(response.getBodyText(), KakaoTranslateResponse.class);
+            result = new KakaoTranslateResult(kakaoResponse.getTranslatedText().get(0).get(0)); //TODO fix
+        } catch (InterruptedException | JsonProcessingException | ExecutionException e) {
+            logger.error(e);
+            result = new KakaoTranslateResult();
+        }
+        return result;
     }
 
     @Override
-    public KakaoTranslateResult translate(String translateTarget, Language asisLang) {
-        return this.translate(translateTarget, asisLang, Language.KR);
+    public KakaoTranslateResult translate(String translateTarget, Language targetLang) {
+        Language asisLang = recognizeLanguage(translateTarget).getLanguage();
+        return this.translate(translateTarget, asisLang, targetLang);
     }
 }

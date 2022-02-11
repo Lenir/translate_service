@@ -1,4 +1,4 @@
-package com.lenir.translate_service;
+package com.lenir.translate_service.communicator;
 
 import com.lenir.translate_service.communicator.KakaoLanguageDetectParameter;
 import com.lenir.translate_service.communicator.PortalRequest;

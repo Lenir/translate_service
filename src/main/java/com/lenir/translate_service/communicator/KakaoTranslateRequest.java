@@ -15,10 +15,11 @@ public class KakaoTranslateRequest implements PortalRequest {
 
     @Override
     public SimpleHttpRequest buildHttpRequest() {
-        return SimpleRequestBuilder.get(kakaoBaseUrl)
+//        return SimpleRequestBuilder.get(kakaoBaseUrl)
+        return SimpleRequestBuilder.get("https://dapi.kakao.com/v2/translation/translate") //TODO fix
                 .addParameter("query", translateParameter.getQuery())
-                .addParameter("src_lang", translateParameter.getSourceLang())
-                .addParameter("target_lang", translateParameter.getTargetLang())
+                .addParameter("src_lang", translateParameter.getSourceLang().toLowerCase())
+                .addParameter("target_lang", translateParameter.getTargetLang().toLowerCase())
                 .build();
     }
 }

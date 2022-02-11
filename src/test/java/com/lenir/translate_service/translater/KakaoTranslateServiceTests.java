@@ -20,7 +20,7 @@ public class KakaoTranslateServiceTests {
     @Test
     void kakaoLanguageRecognizeTest_english(){
         // Setup
-        String translateTarget = "Hamberger";
+        String translateTarget = "I ate Hamberger";
         // 확인 요청
         Optional<KakaoLanguageRecognitionResult> recognitionResult = Optional.ofNullable(
                 kakaoTranslateService.recognizeLanguage(translateTarget)
@@ -46,7 +46,7 @@ public class KakaoTranslateServiceTests {
     @Test
     void kakaoTranslateTest(){
         // Setup
-        String translateTarget = "Hamberger";
+        String translateTarget = "The Hamberger";
         Language targetLang = Language.KR;
         // 번역 요청
         Optional<KakaoTranslateResult> translateResult = Optional.ofNullable(

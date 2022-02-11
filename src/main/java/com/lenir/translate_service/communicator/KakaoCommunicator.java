@@ -2,6 +2,7 @@ package com.lenir.translate_service.communicator;
 
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -12,6 +13,9 @@ import java.util.concurrent.Future;
 public class KakaoCommunicator implements PortalCommunicator{
     @Value("${kakao.auth}")
     private String injectedKakaoAuthToken;
+
+    @Autowired
+    AsyncHttpRequestHelper asyncHttpRequestHelper;
 
     private static String kakaoAuthToken;
 
@@ -28,6 +32,6 @@ public class KakaoCommunicator implements PortalCommunicator{
     public Future<SimpleHttpResponse> getFutureResponse(PortalRequest portalRequest) {
         SimpleHttpRequest httpRequest = portalRequest.buildHttpRequest();
         setKakaoAuthorization(httpRequest, kakaoAuthToken);
-        return AsyncHttpRequestHelper.requestAsyncHttpGet(httpRequest);
+        return asyncHttpRequestHelper.requestAsyncHttpGet(httpRequest);
     }
 }

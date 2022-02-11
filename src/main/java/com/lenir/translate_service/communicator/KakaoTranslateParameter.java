@@ -1,7 +1,9 @@
 package com.lenir.translate_service.communicator;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 
+@Builder
 @AllArgsConstructor
 public class KakaoTranslateParameter implements PortalTranslateParameter{
     String query;
@@ -15,11 +17,11 @@ public class KakaoTranslateParameter implements PortalTranslateParameter{
 
     @Override
     public String getTargetLang() {
-        return this.srcLang;
+        return this.targetLang;
     }
 
     @Override
     public String getSourceLang() {
-        return this.targetLang;
+        return this.srcLang;
     }
 }
